@@ -34,10 +34,13 @@ fun NavegacionApp(authViewModel: AuthViewModel) {
         }
 
         composable("vista_principal") {
-            VistaPrincipalScreen(
+            PanelDocenteScreen(
                 viewModel = authViewModel,
-                onNavegarGestion = {
+                onNavegarEvaluaciones = {
                     navController.navigate("gestion")
+                },
+                onNavegarEditarPerfil = {
+                    navController.navigate("editar_perfil")
                 },
                 onCerrarSesion = {
                     navController.navigate("login") {
@@ -47,13 +50,13 @@ fun NavegacionApp(authViewModel: AuthViewModel) {
             )
         }
 
-        composable("gestion") {
+        composable(route = "gestion") {
             GestionDocumentosScreen(
-                onNavegarEvaluar = {
-                    navController.navigate("evaluar")
+                onNavegarEvaluacion = {
+                    navController.navigate(route = "evaluacion")
                 },
-                onNavegarVerEvaluaciones = {
-                    navController.navigate("lista_evaluaciones")
+                onNavegarLista = {
+                    navController.navigate(route = "lista_evaluaciones")
                 },
                 onVolver = {
                     navController.popBackStack()
@@ -61,16 +64,19 @@ fun NavegacionApp(authViewModel: AuthViewModel) {
             )
         }
 
-        composable("evaluar") {
+        composable(route = "evaluacion") {
             EvaluacionScreen(
                 viewModel = authViewModel,
-                onGuardarExitoso = {
+                onGuardadoExitoso = {
+                    navController.popBackStack()
+                },
+                onVolver = {
                     navController.popBackStack()
                 }
             )
         }
 
-        composable("lista_evaluaciones") {
+        composable(route = "lista_evaluaciones") {
             ListaEvaluacionesScreen(
                 viewModel = authViewModel,
                 onVolver = {

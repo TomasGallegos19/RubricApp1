@@ -3,6 +3,7 @@ package com.example.rubricapp.data
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.Update
 import androidx.room.Query
 import kotlin.jvm.JvmSuppressWildcards
 
@@ -14,6 +15,9 @@ interface EvaluacionDao {
 
     @Insert
     suspend fun registrarUsuario(usuario: Usuario): Long
+
+    @Update
+    suspend fun actualizarUsuario(usuario: Usuario): Int // <-- Agrega esta función para el perfil
 
     @Insert
     suspend fun registrarAlumno(alumno: Alumno): Long

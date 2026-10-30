@@ -24,15 +24,72 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     var usuarioActual by mutableStateOf<Usuario?>(null)
         private set
 
-    fun registrar(correo: String, contrasena: String, rol: String, onExito: () -> Unit) {
+    fun registrar(
+        nombre: String,
+        correo: String,
+        contrasena: String,
+        rol: String,
+        tituloAcademico: String,
+        profesion: String,
+        telefono: String,
+        onExito: () -> Unit,
+        onError: (String) -> Unit
+    ) {
         viewModelScope.launch {
-            val usuario = Usuario(correo = correo, contrasena = contrasena, rol = rol)
-            dao.registrarUsuario(usuario)
-            onExito()
+            try {
+                val nuevoUsuario = Usuario(
+                    nombre = nombre,
+                    correo = correo,
+                    contrasena = contrasena,
+                    rol = rol,
+                    tituloAcademico = if (rol == "Docente") tituloAcademico else null,
+                    profesion = if (rol == "Instructor") profesion else null,
+                    telefono = if (rol == "Instructor") telefono else null
+                )
+
+                dao.registrarUsuario(nuevoUsuario)
+                onExito()
+            } catch (e: Exception) {
+                onError("Error al registrar: ${e.localizedMessage}")
+            }
         }
     }
 
-    fun iniciarSesion(correo: String, contrasena: String, onExito: () -> Unit, onError: () -> Unit) {
+    fun actualizarDatosUsuario(
+        nombre: String,
+        correo: String,
+        tituloAcademico: String,
+        profesion: String,
+        telefono: String,
+        onExito: () -> Unit
+    ) {
+        val usuarioActualizado = usuarioActual?.copy(
+            nombre = nombre,
+            correo = correo,
+            tituloAcademico = tituloAcademico,
+            profesion = profesion,
+            telefono = telefono
+        )
+
+        if (usuarioActualizado != null) {
+            viewModelScope.launch {
+                try {
+                    db.evaluacionDao().actualizarUsuario(usuarioActualizado)
+                    usuarioActual = usuarioActualizado
+                    onExito()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    } // <-- Llave correcta que cierra actualizarDatosUsuario
+
+    fun iniciarSesion(
+        correo: String,
+        contrasena: String,
+        onExito: () -> Unit,
+        onError: () -> Unit
+    ) {
         viewModelScope.launch {
             val usuario = dao.login(correo, contrasena)
             if (usuario != null) {
@@ -51,24 +108,27 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         onExito: () -> Unit,
         onError: (String) -> Unit
     ) {
+        val calificacion = calificacionStr.toDoubleOrNull()
+        if (calificacion == null || calificacion < 1.0 || calificacion > 7.0) {
+            onError("Por favor, ingrese una calificación válida (1.0 a 7.0).")
+            return
+        }
+
         viewModelScope.launch {
-            val nota = calificacionStr.toDoubleOrNull()
-            if (nota == null || nota < 1.0 || nota > 7.0) {
-                onError("La calificacion debe ser un numero entre 1.00 y 7.00")
-                return@launch
+            try {
+                val nuevoAlumno = Alumno(nombre = nombreAlumno)
+                val alumnoId = db.evaluacionDao().registrarAlumno(nuevoAlumno)
+
+                val nuevaEvaluacion = Evaluacion(
+                    alumnoId = alumnoId.toInt(),
+                    calificacion = calificacion,
+                    comentarios = comentarios
+                )
+                db.evaluacionDao().registrarEvaluacion(nuevaEvaluacion)
+                onExito()
+            } catch (e: Exception) {
+                onError("Error al guardar: ${e.localizedMessage}")
             }
-
-            val alumno = Alumno(nombreFicticio = nombreAlumno, rutFicticio = "12.345.678-9")
-            val alumnoId = dao.registrarAlumno(alumno).toInt()
-
-            val evaluacion = Evaluacion(
-                alumnoId = alumnoId,
-                evaluadorId = 1,
-                calificacion = nota,
-                comentarios = comentarios
-            )
-            dao.registrarEvaluacion(evaluacion)
-            onExito()
         }
     }
 
