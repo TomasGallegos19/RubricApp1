@@ -52,7 +52,6 @@ fun ListaEvaluacionesScreen(
                 .padding(paddingValues)
         ) {
             if (listaEvaluaciones.isEmpty()) {
-                // Mensaje estético si no hay evaluaciones registradas
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -65,7 +64,6 @@ fun ListaEvaluacionesScreen(
                     )
                 }
             } else {
-                // Lista estetica con LazyColumn
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -90,13 +88,12 @@ fun ListaEvaluacionesScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = "Estudiante ID: ${evaluacion.alumnoId}",
+                                        text = "Estudiante: ${evaluacion.nombreAlumno}",
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = verdeInstitucional
                                     )
 
-                                    // Insignia de Calificación
                                     Surface(
                                         shape = RoundedCornerShape(8.dp),
                                         color = verdeClaro

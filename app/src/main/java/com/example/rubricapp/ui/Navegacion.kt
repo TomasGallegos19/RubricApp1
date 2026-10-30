@@ -63,6 +63,17 @@ fun NavegacionApp(authViewModel: AuthViewModel) {
                 }
             )
         }
+        composable(route = "editar_perfil") {
+            EditarPerfilScreen(
+                viewModel = authViewModel,
+                onActualizacionExitosa = {
+                    navController.popBackStack()
+                },
+                onVolver = {
+                    navController.popBackStack()
+                }
+            )
+        }
 
         composable(route = "evaluacion") {
             EvaluacionScreen(

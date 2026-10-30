@@ -5,6 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.rubricapp.R
@@ -32,6 +36,7 @@ fun LoginScreen(
     var correo by remember { mutableStateOf("") }
     var contrasena by remember { mutableStateOf("") }
     var mensajeError by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) } // Estado para el ojo de la contraseña
 
     Scaffold(
         topBar = {
@@ -41,7 +46,6 @@ fun LoginScreen(
             )
         }
     ) { paddingValues ->
-        // Contenedor general que cubre toda la pantalla con degradado
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -50,13 +54,11 @@ fun LoginScreen(
                 .padding(24.dp),
             contentAlignment = Alignment.Center
         ) {
-            // Columna principal que organiza la tarjeta arriba y la frase abajo de forma independiente
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // TARJETA BLANCA DE INICIO DE SESIÓN
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -104,13 +106,23 @@ fun LoginScreen(
                             value = contrasena,
                             onValueChange = { contrasena = it },
                             label = { Text("Contraseña") },
-                            visualTransformation = PasswordVisualTransformation(),
+                            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
+                            trailingIcon = {
+                                val imagen = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                                val descripcion = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña"
+
+                                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                    Icon(imageVector = imagen, contentDescription = descripcion)
+                                }
+                            },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = verdeInstitucional,
-                                focusedLabelColor = verdeInstitucional
+                                focusedLabelColor = verdeInstitucional,
+                                cursorColor = verdeInstitucional,
+                                focusedTrailingIconColor = verdeInstitucional
                             )
                         )
 

@@ -83,7 +83,10 @@ fun EvaluacionScreen(
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = verdeInstitucional,
-                            focusedLabelColor = verdeInstitucional
+                            focusedLabelColor = verdeInstitucional,
+                            cursorColor = verdeInstitucional,
+                            focusedLeadingIconColor = verdeInstitucional,
+                            focusedTrailingIconColor = verdeInstitucional
                         )
                     )
 
@@ -98,7 +101,10 @@ fun EvaluacionScreen(
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = verdeInstitucional,
-                            focusedLabelColor = verdeInstitucional
+                            focusedLabelColor = verdeInstitucional,
+                            cursorColor = verdeInstitucional,
+                            focusedLeadingIconColor = verdeInstitucional,
+                            focusedTrailingIconColor = verdeInstitucional
                         )
                     )
 
@@ -114,7 +120,10 @@ fun EvaluacionScreen(
                         maxLines = 4,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = verdeInstitucional,
-                            focusedLabelColor = verdeInstitucional
+                            focusedLabelColor = verdeInstitucional,
+                            cursorColor = verdeInstitucional,
+                            focusedLeadingIconColor = verdeInstitucional,
+                            focusedTrailingIconColor = verdeInstitucional
                         )
                     )
 

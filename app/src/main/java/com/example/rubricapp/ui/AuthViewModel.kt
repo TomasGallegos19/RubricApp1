@@ -82,7 +82,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
-    } // <-- Llave correcta que cierra actualizarDatosUsuario
+    }
 
     fun iniciarSesion(
         correo: String,
@@ -120,8 +120,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 val alumnoId = db.evaluacionDao().registrarAlumno(nuevoAlumno)
 
                 val nuevaEvaluacion = Evaluacion(
-                    alumnoId = alumnoId.toInt(),
-                    calificacion = calificacion,
+                    nombreAlumno = nombreAlumno,
+                    calificacion = calificacionStr.toDoubleOrNull() ?: 0.0,
                     comentarios = comentarios
                 )
                 db.evaluacionDao().registrarEvaluacion(nuevaEvaluacion)

@@ -26,7 +26,7 @@ data class Alumno(
 data class Evaluacion(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val alumnoId: Int,
+    val nombreAlumno: String,
     val calificacion: Double,
     val comentarios: String
 )
