@@ -106,7 +106,7 @@ fun EditarPerfilScreen(
                         OutlinedTextField(
                             value = tituloAcademico,
                             onValueChange = { tituloAcademico = it },
-                            label = { Text("Título / Escalafón Académico") },
+                            label = { Text("Título Académico") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
